@@ -171,7 +171,7 @@ The habitats site are mostly forested landscapes or suburban areas, Urban and ru
 ::: {#fig-gradient}
 ```{r}
 library(readxl)
-Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
+Data_Globale_Tahiti <- read_excel("Data_Globale_Tahiti.xlsx")
 #| label: gradient
 # On crée un index numérique pour l’axe x
 Data_Globale_Tahiti <- Data_Globale_Tahiti %>%
@@ -300,5 +300,5 @@ Bonus sur la thématique Tahiti_Soundscape
 ```{r}
 #| label: Tahiti
 library(readxl)
-Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
+Data_Globale_Tahiti <- read_excel("Data_Globale_Tahiti.xlsx")
 ```
