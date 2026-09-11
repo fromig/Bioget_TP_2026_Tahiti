@@ -9,4 +9,7 @@
 *.log
 *.tex
 *_cache/
+*.png
+*_Data_IA_Tahiti_10m_Complet/
+*_Excel_DataBrut/
 

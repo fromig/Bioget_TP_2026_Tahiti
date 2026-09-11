@@ -231,21 +231,20 @@ ggplot() +
        caption = "Gradient site") +
   
   theme_minimal() +
+    theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
 Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
 :::
 
 Acoustic indices selection for better description and tests, use the website to have basic indices described [here](https://ecohack.shinyapps.io/Acoustic_Index_Users_Guide/) [@bradfer-lawrence2025]
 
+
 ::: {fig-indice fig-env="figure*"}
 ```{r}
 #|label: indice
-#|out-width: 100%
 knitr::include_graphics("images/Capture d'écran 2026-08-18 161213.png")
 ```
-
 Pattern expectation of selected indices [@sánchez-giraldo2021]
 :::
 
