@@ -122,10 +122,20 @@ set.seed(973)
 
 # Introduction
 
+La question de la diversité des forêts tropicales fascine les écologues parce qu'elle a des enjeux très importants [@Gibson2011].
+est qu'elle est difficile à comprendre [@Wright2002b].
+
+A l'heure des menaces sur la biodiversité [@Fadrique2026], une connaissance plus détaillée de la diversité des forêts très étudiées est utile.
+
+Des modèles ont été publiés [@Liang2022].
+
+Comparer la diversité de Paracou [@Gourlet-Fleury2004] et de BCI [@Raby2017].
+
 # Matériels et Méthodes
 
 - Site de Paracou Comparer la diversité de Paracou [@Gourlet-Fleury2004] et de BCI [@Raby2017].
 - Site de BCI
+- Les analyses sont réalisées avec R [@R] et le package divent [@Marcon2026a].
 
 ```{r}
 #| label: Paracou_BCI
@@ -174,6 +184,11 @@ Différence de valeurs de diversité en fonction de son ordre entre les sites de
 
 # Discussion
 
+@MacArthur1967 montrent mathématiquement que la richesse spécifique (le nombre d'espèces) d'une île est un équilibre dynamique entre le taux d'immigration et le taux d'extinction, ce dernier étant directement dicté par la taille de l'île.
+
+BCI est une forêt secondarisée [@Raby2017].
+Sa diversité pourrait être augmentée selon la théorie de la perturbation intermédiaire [@Connell1978].
+
 Bonus sur la thématique Tahiti_Soundscape
 
 ```{r}
@@ -182,9 +197,7 @@ library(readxl)
 Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
 ```
 
-
 ::: {#fig-gradient}
-
 ```{r}
 #| label: gradient
 # On crée un index numérique pour l’axe x
@@ -247,6 +260,6 @@ ggplot() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
 Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
 :::
-
