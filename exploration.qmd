@@ -138,12 +138,13 @@ A l'heure des menaces sur la biodiversité [@Fadrique2026], une connaissance plu
 BCI est une forêt secondarisée [@Raby2017].
 Sa diversité pourrait être augmentée selon la théorie de la perturbation intermédiaire [@Connell1978].
 
-
 ```{r}
 library(readxl)
 Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
 ```
-Packages nécessaires pour les analyses 
+
+Packages nécessaires pour les analyses
+
 ```{r}
 library(tuneR)
 library(seewave)
@@ -165,8 +166,8 @@ library(purrr)
 library(broom.mixed)
 ```
 
-Traitement Indice acoustique
-Import sur un DF différent de tout les indices et audio en 5 et 10 minutes
+Traitement Indice acoustique Import sur un DF différent de tout les indices et audio en 5 et 10 minutes
+
 ```{r}
 chemin <- "data/Data_IA_Tahiti_10m_Complet"
 fichiers_xlsx <- list.files(
@@ -179,7 +180,9 @@ IA_10m_0.3_8Khz <- lapply(fichiers_xlsx, read_excel)
 IA_10m_0.3_8Khz  <- bind_rows(lapply(fichiers_xlsx, read_excel))
 ```
 
-Pour DF_IA_5 et DF_IA10 : Simplification des Dataset pour avoir des indices acoustiques par fichier, 1 par ligne, on nettoie l'indice ACI pour n'avoir que la valeur principale pour un fichier (pas par fréquence de 1000 Hz). on supprimer les colonnes créé vide avec les NA
+Pour DF_IA_5 et DF_IA10 : Simplification des Dataset pour avoir des indices acoustiques par fichier, 1 par ligne, on nettoie l'indice ACI pour n'avoir que la valeur principale pour un fichier (pas par fréquence de 1000 Hz).
+on supprimer les colonnes créé vide avec les NA
+
 ```{r}
 IA_10m_0.3_8Khz <- IA_10m_0.3_8Khz %>%
   dplyr::select(where(~ !all(is.na(.)))) %>%
@@ -205,8 +208,9 @@ DF_IA10 <- IA_10m %>%
   dplyr::select(-Fichier,
          -EAA)
 ```
-On créer les variables adéquate pour l'heure + minute, l'heure et la date
-Pareil pour DF_IA10
+
+On créer les variables adéquate pour l'heure + minute, l'heure et la date Pareil pour DF_IA10
+
 ```{r}
 # Nettoyer le nom (ignorer _000, sans modifier la colonne fichier)
 f_clean <- sub("_[0-9]{3}(?=\\.wav$)", "", DF_IA10$fichier, perl = TRUE)
@@ -226,10 +230,10 @@ DF_IA10$heure_num <- as.numeric(format(DF_IA10$datetime, "%H", tz = "Pacific/Tah
 DF_IA10 <- DF_IA10[order(DF_IA10$Enr, DF_IA10$datetime), ]
 ```
 
-
 On fait la même chose pour DF_IA 10
+
 ```{r}
-Data_Meteo10 <- read_excel("Data_temp_prec.xlsx")
+Data_Meteo10 <- read_excel("data/Excel_DataBrut/Data_temp_prec.xlsx")
 
 DF_IA10$date <- as.Date(DF_IA10$date)
 Data_Meteo10$date <- as.Date(Data_Meteo10$date)
@@ -272,7 +276,9 @@ DF_IA10 <- DF_IA10 %>%
   left_join(prec_mean, by = "id_row") %>%
   left_join(temp_mean, by = "id_row")
 ```
+
 Centré_réduire les données pour modélisation
+
 ```{r}
 DF_IA10_sc <- DF_IA10 %>%
   mutate(
@@ -285,3 +291,64 @@ DF_IA10_sc <- DF_IA10 %>%
   )
 ```
 
+```{r}
+# On crée un index numérique pour l’axe x
+Data_Globale_Tahiti <- Data_Globale_Tahiti %>%
+  mutate(x_id = as.numeric(factor(Enr)))
+
+# Dataset pour les rectangles de fond
+communes_bg <- Data_Globale_Tahiti %>%
+  group_by(Commune) %>%
+  summarise(
+    xmin = min(x_id) - 0.5,
+    xmax = max(x_id) + 0.5
+  )
+# Coefficient pour mettre l'altitude à l'échelle des HSA
+coef_alt <- max(Data_Globale_Tahiti$`HSA`, na.rm = TRUE) /
+            max(Data_Globale_Tahiti$`Alt`, na.rm = TRUE)
+
+ggplot() +
+  # Fond coloré discret
+  geom_rect(data = communes_bg,
+            aes(xmin = xmin, xmax = xmax,
+                ymin = -Inf, ymax = Inf,
+                fill = Commune),
+            alpha = 0.08) +
+  
+  # Barres HSA
+  geom_col(data = Data_Globale_Tahiti,
+           aes(x = x_id, y = `HSA`),
+           fill = "grey40") +
+  
+  # Points altitude (mis à l’échelle)
+  geom_point(data = Data_Globale_Tahiti,
+             aes(x = x_id, y = `Alt` * coef_alt),
+             shape = 4,              # croix
+             color = "#E5989B",      # rouge pastel doux
+             size = 2,
+             stroke = 0.8,
+             alpha = 0.8) +
+  
+  scale_x_continuous(
+    breaks = Data_Globale_Tahiti$x_id,
+    labels = Data_Globale_Tahiti$Enr
+  ) +
+  geom_line(data = Data_Globale_Tahiti,
+          aes(x = x_id, y = `Alt`* coef_alt, group = 1),
+          color = "#E5989B",
+          linewidth = 0.7) +
+  
+  scale_y_continuous(
+    name = "Hard Surface Area (%)",
+    sec.axis = sec_axis(~ . / coef_alt,
+                        name = "Altitude (m)")
+  ) +
+  
+  scale_fill_brewer(palette = "Paired") +
+  
+  labs(x = "Site",
+       caption = "Gradient site") +
+  
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
