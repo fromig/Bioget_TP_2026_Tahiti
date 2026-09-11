@@ -124,7 +124,7 @@ set.seed(973)
 
 # Matériels et Méthodes
 
-- Site de Paracou
+- Site de Paracou Comparer la diversité de Paracou [@Gourlet-Fleury2004] et de BCI [@Raby2017].
 - Site de BCI
 
 ```{r}
@@ -149,7 +149,7 @@ BCI %>%
 ::: {#fig-compa}
 ```{r}
 #| label: compa
-#| out-width: 30%
+#| out-width: 50%
 paracou6 %>% 
   # Vecteur des noms d'espèce de chaque arbre
   pull(spName) %>% 
@@ -173,3 +173,79 @@ Différence de valeurs de diversité en fonction de son ordre entre les sites de
 :::
 
 # Discussion
+
+Bonus sur la thématique Tahiti_Soundscape
+
+```{r}
+#| label: Tahiti
+library(readxl)
+Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
+```
+
+
+::: {#fig-gradient}
+
+```{r}
+#| label: gradient
+# On crée un index numérique pour l’axe x
+Data_Globale_Tahiti <- Data_Globale_Tahiti %>%
+  mutate(x_id = as.numeric(factor(Enr)))
+
+# Dataset pour les rectangles de fond
+communes_bg <- Data_Globale_Tahiti %>%
+  group_by(Commune) %>%
+  summarise(
+    xmin = min(x_id) - 0.5,
+    xmax = max(x_id) + 0.5
+  )
+# Coefficient pour mettre l'altitude à l'échelle des HSA
+coef_alt <- max(Data_Globale_Tahiti$`HSA`, na.rm = TRUE) /
+            max(Data_Globale_Tahiti$`Alt`, na.rm = TRUE)
+
+ggplot() +
+  # Fond coloré discret
+  geom_rect(data = communes_bg,
+            aes(xmin = xmin, xmax = xmax,
+                ymin = -Inf, ymax = Inf,
+                fill = Commune),
+            alpha = 0.08) +
+  
+  # Barres HSA
+  geom_col(data = Data_Globale_Tahiti,
+           aes(x = x_id, y = `HSA`),
+           fill = "grey40") +
+  
+  # Points altitude (mis à l’échelle)
+  geom_point(data = Data_Globale_Tahiti,
+             aes(x = x_id, y = `Alt` * coef_alt),
+             shape = 4,              # croix
+             color = "#E5989B",      # rouge pastel doux
+             size = 2,
+             stroke = 0.8,
+             alpha = 0.8) +
+  
+  scale_x_continuous(
+    breaks = Data_Globale_Tahiti$x_id,
+    labels = Data_Globale_Tahiti$Enr
+  ) +
+  geom_line(data = Data_Globale_Tahiti,
+          aes(x = x_id, y = `Alt`* coef_alt, group = 1),
+          color = "#E5989B",
+          linewidth = 0.7) +
+  
+  scale_y_continuous(
+    name = "Hard Surface Area (%)",
+    sec.axis = sec_axis(~ . / coef_alt,
+                        name = "Altitude (m)")
+  ) +
+  
+  scale_fill_brewer(palette = "Paired") +
+  
+  labs(x = "Site",
+       caption = "Gradient site") +
+  
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
+:::
