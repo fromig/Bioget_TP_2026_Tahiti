@@ -45,7 +45,7 @@ execute:
   # Show warnings
   warning: false
   # Cache code results
-  cache: false
+  cache: true
 # Template specific
 journalinfo: "Publication reference"
 archive: "DOI: xxx/xx"
