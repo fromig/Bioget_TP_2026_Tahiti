@@ -245,6 +245,7 @@ Acoustic indices selection for better description and tests, use the website to 
 #|label: indice
 knitr::include_graphics("images/Capture d'écran 2026-08-18 161213.png")
 ```
+
 Pattern expectation of selected indices [@sánchez-giraldo2021]
 :::
 
