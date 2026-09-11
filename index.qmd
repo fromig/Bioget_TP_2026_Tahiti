@@ -154,48 +154,15 @@ BCI %>%
   BCI_50ha
 ```
 
-# Résultats
+- Site Selection
 
-::: {#fig-compa}
-```{r}
-#| label: compa
-#| out-width: 50%
-paracou6 %>% 
-  # Vecteur des noms d'espèce de chaque arbre
-  pull(spName) %>% 
-  # Création d'un objet "abundances"
-  as_abundances() %>% 
-  # Ajout des données de BCI
-  bind_rows(BCI_50ha) %>% 
-  # Remplacement des NA par 0
-  mutate(across(everything(), ~ replace_na(.x, 0))) %>% 
-  # Nom des sites
-  mutate(site = c("Paracou", "BCI")) %>% 
-  # Profil de diversité avec enveloppe de confiance
-  profile_hill(n_simulations = 2) %>% 
-  # Figure
-  autoplot() +
-  # Titre de la légende
-  labs(color = "Forêt", linetype = "Forêt")
-```
+The sites and data used in this study comes from the work of Emma Pilleboue, who installed temporary acoustic recording unit (ARU) throughout her internship.
+After installation, the ARU recorded continuously during a period of several days varying between one full day and five full days, between the 15/02/2024 and 02/05/2024.
 
-Différence de valeurs de diversité en fonction de son ordre entre les sites de Paracou et BCI
-:::
-
-# Discussion
-
-@MacArthur1967 montrent mathématiquement que la richesse spécifique (le nombre d'espèces) d'une île est un équilibre dynamique entre le taux d'immigration et le taux d'extinction, ce dernier étant directement dicté par la taille de l'île.
-
-BCI est une forêt secondarisée [@Raby2017].
-Sa diversité pourrait être augmentée selon la théorie de la perturbation intermédiaire [@Connell1978].
-
-Bonus sur la thématique Tahiti_Soundscape
-
-```{r}
-#| label: Tahiti
-library(readxl)
-Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
-```
+In totals, 51 sites of Emma’s work are used for this study.
+The ARU were located at a minimal distance of approximately 200 meters and were in place following altitudinal or urban gradients in some cases.
+They were also classified into four main habitat type : Urban (4), Suburban (15), Rural (6), Forest(26).
+The habitats site are mostly forested landscapes or suburban areas, Urban and rural areas are less represented in the site selection.
 
 ::: {#fig-gradient}
 ```{r}
@@ -263,3 +230,69 @@ ggplot() +
 
 Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
 :::
+
+- Acoustic indices selection
+
+::: {fig-indice}
+```{r}
+#|label: indice
+#|out-width: 100%
+knitr::include_graphics("images/Capture d'écran 2026-08-18 161213.png")
+```
+
+Pattern expectation of selected indices [@sánchez-giraldo2021]
+:::
+
+- Analysis framework intended
+
+::: {#fig-framework}
+```{r}
+#| label: framework
+knitr::include_graphics("images/framework.png")
+```
+
+Schéma d'analyse visé
+:::
+
+# Résultats
+
+::: {#fig-compa}
+```{r}
+#| label: compa
+#| out-width: 50%
+paracou6 %>% 
+  # Vecteur des noms d'espèce de chaque arbre
+  pull(spName) %>% 
+  # Création d'un objet "abundances"
+  as_abundances() %>% 
+  # Ajout des données de BCI
+  bind_rows(BCI_50ha) %>% 
+  # Remplacement des NA par 0
+  mutate(across(everything(), ~ replace_na(.x, 0))) %>% 
+  # Nom des sites
+  mutate(site = c("Paracou", "BCI")) %>% 
+  # Profil de diversité avec enveloppe de confiance
+  profile_hill(n_simulations = 2) %>% 
+  # Figure
+  autoplot() +
+  # Titre de la légende
+  labs(color = "Forêt", linetype = "Forêt")
+```
+
+Différence de valeurs de diversité en fonction de son ordre entre les sites de Paracou et BCI
+:::
+
+# Discussion
+
+@MacArthur1967 montrent mathématiquement que la richesse spécifique (le nombre d'espèces) d'une île est un équilibre dynamique entre le taux d'immigration et le taux d'extinction, ce dernier étant directement dicté par la taille de l'île.
+
+BCI est une forêt secondarisée [@Raby2017].
+Sa diversité pourrait être augmentée selon la théorie de la perturbation intermédiaire [@Connell1978].
+
+Bonus sur la thématique Tahiti_Soundscape
+
+```{r}
+#| label: Tahiti
+library(readxl)
+Data_Globale_Tahiti <- read_excel("data/Excel_DataBrut/Data_Globale_Tahiti.xlsx")
+```
