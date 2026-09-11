@@ -10,6 +10,7 @@ format:
   stylisharticle-html:
     # Color example, see "Text color"
     css: colors.css
+    docx:
 # Authors (https://quarto.org/docs/journals/authors.html#author-schema)
 author:
   - name: Félix Romiguière
@@ -133,6 +134,8 @@ Comparer la diversité de Paracou [@Gourlet-Fleury2004] et de BCI [@Raby2017].
 
 # Matériels et Méthodes
 
+Nombre de Hill [@hill1973]
+
 - Site de Paracou Comparer la diversité de Paracou [@Gourlet-Fleury2004] et de BCI [@Raby2017].
 - Site de BCI
 - Les analyses sont réalisées avec R [@R] et le package divent [@Marcon2026a].
@@ -231,7 +234,7 @@ ggplot() +
 Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
 :::
 
-- Acoustic indices selection
+Acoustic indices selection for better description and tests, use the website to have basic indices described [here](https://ecohack.shinyapps.io/Acoustic_Index_Users_Guide/) [@bradfer-lawrence2025]
 
 ::: {fig-indice}
 ```{r}
