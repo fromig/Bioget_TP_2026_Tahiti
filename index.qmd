@@ -162,7 +162,7 @@ BCI %>%
 
 The sites and data used in this study comes from the work of Emma Pilleboue, who installed temporary acoustic recording unit (ARU) throughout her internship.
 After installation, the ARU recorded continuously during a period of several days varying between one full day and five full days, between the 15/02/2024 and 02/05/2024.
-
+rtgh
 In totals, 51 sites of Emma’s work are used for this study.
 The ARU were located at a minimal distance of approximately 200 meters and were in place following altitudinal or urban gradients in some cases.
 They were also classified into four main habitat type : Urban (4), Suburban (15), Rural (6), Forest(26).
@@ -240,13 +240,12 @@ Gradient d'HardSurfaceArea (%) et d'Altitude (m) en fonction des sites étudiés
 Acoustic indices selection for better description and tests, use the website to have basic indices described [here](https://ecohack.shinyapps.io/Acoustic_Index_Users_Guide/) [@bradfer-lawrence2025]
 
 
-::: {fig-indice}
+::: {#fig-indice fig-env="figure*"}
 ```{r}
 #|label: indice
-knitr::include_graphics("images/Capture d'écran 2026-08-18 161213.png")
+knitr::include_graphics("images/indice.png")
 ```
 
-Pattern expectation of selected indices [@sánchez-giraldo2021]
 :::
 
 - Analysis framework intended
